@@ -1,0 +1,56 @@
+name: Build Mobile Apps
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'latest'
+          channel: 'stable'
+      - name: Create native folders
+        run: flutter create . --platforms android
+      - name: Get dependencies
+        run: flutter pub get
+      - name: Build APK
+        run: flutter build apk --release
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: webnify-android-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  build-ios:
+    name: Build iOS IPA
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'latest'
+          channel: 'stable'
+      - name: Create native folders
+        run: flutter create . --platforms ios
+      - name: Get dependencies
+        run: flutter pub get
+      - name: Build iOS
+        run: flutter build ios --release --no-codesign
+      - name: Upload iOS App
+        uses: actions/upload-artifact@v3
+        with:
+          name: webnify-ios-app
+          path: build/ios/iphoneos/Runner.app
