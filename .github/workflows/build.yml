@@ -16,11 +16,16 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          # Removed the 'latest' tag which was causing the error
           
       - name: Initialize App Folders
-        run: flutter create --platforms android,ios .
+        run: flutter create --platforms android,ios --org com.webnify .
           
+      - name: Enable Android Internet Permission
+        run: |
+          sed -i '' '/<manifest/a\
+          <uses-permission android:name="android.permission.INTERNET" />' android/app/src/main/AndroidManifest.xml
+          sed -i '' 's/<application/<application android:usesCleartextTraffic="true"/' android/app/src/main/AndroidManifest.xml
+
       - name: Get dependencies
         run: flutter pub get
         
