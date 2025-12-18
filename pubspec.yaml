@@ -1,0 +1,23 @@
+name: webnify_app
+description: A native wrapper for the Webnify landing page.
+version: 1.0.0+1
+publish_to: 'none'
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  webview_flutter: ^4.4.2
+  flutter_spinkit: ^5.2.0
+  connectivity_plus: ^5.0.2 # Added for better UX (checking internet)
+  url_launcher: ^6.2.1      # Added to handle external links (WhatsApp, Phone)
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
